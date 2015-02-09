@@ -78,7 +78,7 @@ function Dragon(id) {
 		return total;
 	});
 	self.image = ko.computed(function() {
-		return "http://flightrising.com/rendern/avatars/$0/$1.png".format(Math.ceil(self.id()/100 + 0.5), self.id());
+		return "http://flightrising.com/rendern/avatars/$0/$1.png".format(Math.ceil((self.id()+ 0.5)/100), self.id());
 	});
 	self.bbcode = ko.computed(function () {
 		return "[url=http://flightrising.com/main.php?dragon=$0][img]$1[/img][/url]\n[b]from levels $2 to $3[/b]".format(self.id(), self.image(), self.currentLevel(), self.goalLevel());
