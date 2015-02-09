@@ -1,0 +1,129 @@
+<html>
+<head>
+	<title>Joy's Leveling Service</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" /> 
+	<!-- <link rel="stylesheet" type="text/css" href="css/typeaheadjs.css" /> -->
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.3.min.js"></script>
+	<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	<!-- // <script type="text/javascript" src="js/handlebars-v2.0.0.js"></script> -->
+	<!-- // <script type="text/javascript" src="js/dragon-template.js"></script> -->
+	<!-- // <script type="text/javascript" src="js/typeahead.bundle.js"></script> -->
+	<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/knockout/knockout-3.0.0.js"></script>
+	<script type="text/javascript" src="js/ui.js"></script>
+	<script id="dragon-stone-template" type="text/x-handlebars-template">
+		<div class="panel panel-default stone-row" data-toggle="tooltip" data-placement="bottom" title="Remove {{name}}">
+			<div class="panel-heading text-center">
+				<div class="{{css}}"></div>
+				<div class="stone-name">
+					{{cost}}T
+				</div>
+			</div>
+		</div>
+	</script>
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a href="../" class="navbar-brand">Joy's Leveling Service</a>
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse" id="navbar-main">
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="/">Home</a>
+					</li>
+					<li>
+						<a href="http://flightrising.com/main.php?p=mb&board=ibaz&id=1252246">Forum Thread</a>
+					</li>
+					<li>
+						<a href="http://www1.flightrising.com/msgs/new">PM us!</a>
+					</li>
+				</ul>
+
+				<!-- <ul class="nav navbar-nav navbar-right">
+					<li><a href="#" target="_blank"></a></li>
+				</ul> -->
+
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container-fluid">
+		
+		<div class="row">
+			
+			<div class="col-md-3">
+				<div class="panel panel-inverse">
+					<div class="panel-heading">
+						<h3 class="panel-title">Welcome to Joy's Leveling Service!</h3>
+						<!-- <button class="btn btn-success btn-sm pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button> -->
+					</div>
+					<div class="panel-body">
+						<p>Blah blah blah also our names are <a href="http://flightrising.com/main.php?p=view&tab=userpage&id=83368">@Joydom29</a>, <a href="http://flightrising.com/main.php?p=view&id=122752&tab=userpage">@saltyeyes</a>, and <a href="http://flightrising.com/main.php?p=view&id=108884&tab=userpage">@MissRaven</a>.
+						<p>Keep in mind, everything here is only an estimate! If you want to pay for your order with things other than treasure, please check our <a href="http://flightrising.com/main.php?p=mb&board=ibaz&id=1252246">forum thread</a> for up-to-date information!</p>
+					</div>
+				</div>
+				<div class="panel panel-inverse">
+					<div class="panel-heading">
+						<h3 class="panel-title">Price & Output</h3>
+					</div>
+					<div class="panel-body">
+						<strong data-bind="visible: totalCost() > 0">Current Total: <span data-bind="text: displayTotalCost()"></span></strong>
+						<textarea data-bind="visible: validDragons() > 0, value: displayOutput()" class="form-control" data-bind="value: displayOutput()"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-9">
+				<div class="panel panel-inverse">
+					<div class="panel-heading">
+						<h3 class="panel-title">Dragons</h3>
+						<!-- <button class="btn btn-success btn-sm pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button> -->
+					</div>
+					<div class="panel-body" id="sls-here-be-dragons">
+						<div class="row" data-bind="foreach: dragons">
+							<div class="col-md-4">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<div class="input-group">
+											<span class="input-group-addon" data-toggle="tooltip" data-placement="bottom" title="Your dragon's ID">#</span>
+
+											<input type="number" placeholder="Dragon ID" data-bind="value: id, valueUpdate: 'afterkeydown'" class="form-control"/>
+											<span class="input-group-btn">
+												<button type="button" class="btn btn-danger" data-bind="click: $root.removeDragon"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+											</span>
+										</div>
+									</div>
+									<div class="panel-body">
+										<form class="form-horizontal" role="form">
+											<div class="form-group">
+												<label class="control-label col-md-6" data-bind="uniqueFor: currentLevel" data-toggle="tooltip" data-placement="bottom" title="Your dragon's level when you send 'em to us.">Current Level:</label>
+												<div class="col-md-6">
+													<input type="number" class="form-control" data-bind="uniqueId: currentLevel, value: currentLevel, valueUpdate: 'afterkeydown'"/>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="control-label col-md-6" data-bind="uniqueFor: goalLevel" data-toggle="tooltip" data-placement="bottom" title="The level you want the dragon to be once we finish training the heck out of 'em!">Goal Level:</label>
+												<div class="col-md-6">
+													<input type="number" class="form-control" data-bind="uniqueId: goalLevel, value: goalLevel, valueUpdate: 'afterkeydown'"/>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<button class="btn btn-success col-md-12" data-bind="click: $root.addDragon"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</body>
+	</html>

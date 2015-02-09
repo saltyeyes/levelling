@@ -1,0 +1,33 @@
+body {
+  padding-top: 60px;
+}
+
+.stone {
+    background: url(../img/stones.png) no-repeat top left; 
+    min-width: 43px;
+    min-height: 43px;
+    width: 43px;
+    height: 43px;
+}
+.stone, .stone-name, .twitter-typeahead {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.twitter-typeahead {
+  width: auto;
+  /*float: none;*/
+}
+
+.tt-dropdown-menu {
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.stone-1193{ background-position: 0 0; } 
+.stone-495{ background-position: 0 -48px; } 
+.stone-498{ background-position: 0 -96px; } 
+.stone-521{ background-position: 0 -144px; } 
+.stone-526{ background-position: 0 -192px; } 
+.stone-674{ background-position: 0 -240px; } 
+.stone-687{ background-position: 0 -288px; } 
