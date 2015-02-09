@@ -58,13 +58,52 @@ ko.extenders.numeric = function(target, precision) {
     return result;
 };
 
+ko.extenders.limit = function(target, options) {
+	var lowerLimit = options.lower, 
+		upperLimit = options.upper;
+    //create a writable computed observable to intercept writes to our observable
+    var result = ko.pureComputed({
+        read: target,  //always return the original observables value
+        write: function(newValue) {
+            var current = target();
+            if (typeof upperLimit == "undefined") {
+				valueToWrite = Math.max(lowerLimit, newValue);
+				// console.log("no upper");
+            } else if (typeof lowerLimit == "undefined") {
+            	valueToWrite = Math.min(upperLimit, newValue);
+				// console.log("no lower");
+            } else {
+				// console.log("both");
+            	valueToWrite = Math.min(upperLimit, Math.max(lowerLimit, newValue));
+            }
+            // console.log(current, valueToWrite);
+ 
+            //only write if it changed
+            if (valueToWrite !== current) {
+                target(valueToWrite);
+            } else {
+                //if the rounded value is the same, but a different value was written, force a notification for the current field
+                if (newValue !== current) {
+                    target.notifySubscribers(valueToWrite);
+                }
+            }
+        }
+    }).extend({ notify: 'always' });
+ 
+    //initialize with current value to make sure it is rounded appropriately
+    result(target());
+ 
+    //return the new computed observable
+    return result;
+};
+
 var levelCosts = [1000,1000,1000,1000,1000,2000,2000,2000,3000,4000,6000,6000,8000,8000,10000,10000,10000,10000,12000,12000,14000,14000,16000,16000];
 
 function Dragon(id) {
 	var self = this;
-	self.id = ko.observable(id ? id : 0).extend({numeric: 0});
-	self.currentLevel = ko.observable(1).extend({numeric: 0});
-	self.goalLevel = ko.observable(1).extend({numeric: 0});
+	self.id = ko.observable(id ? id : 0).extend({numeric: 0, limit: {lower:0}});
+	self.currentLevel = ko.observable(3).extend({numeric: 0, limit: {upper:25, lower:1}});
+	self.goalLevel =    ko.observable(5).extend({numeric: 0, limit: {upper:25, lower:1}});
 	self.cost = ko.computed(function() {
 		if (self.currentLevel() < 1 || self.goalLevel() < 1 || self.currentLevel() == self.goalLevel()) {
 			return 0;
@@ -74,7 +113,7 @@ function Dragon(id) {
 		for (var i = self.currentLevel(); i < self.goalLevel(); i++) {
 			total += levelCosts[i-1];
 		}
-		console.log("Cost: " + total);
+		// console.log("Cost: " + total);
 		return total;
 	});
 	self.image = ko.computed(function() {
@@ -116,7 +155,7 @@ function DragonListModel() {
 				out += "\n$0\n".format(dragon.bbcode());
 			}
 		}
-		console.log(valid, out);
+		// console.log(valid, out);
 		return valid ? out : "";
 	});
 	self.validDragons = ko.computed(function() {
