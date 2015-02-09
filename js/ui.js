@@ -102,8 +102,8 @@ var levelCosts = [1000,1000,1000,1000,1000,2000,2000,2000,3000,4000,6000,6000,80
 function Dragon(id) {
 	var self = this;
 	self.id = ko.observable(id ? id : 0).extend({numeric: 0, limit: {lower:0}});
-	self.currentLevel = ko.observable(3).extend({numeric: 0, limit: {upper:25, lower:1}});
-	self.goalLevel =    ko.observable(5).extend({numeric: 0, limit: {upper:25, lower:1}});
+	self.currentLevel = ko.observable(1).extend({numeric: 0, limit: {upper:25, lower:1}});
+	self.goalLevel =    ko.observable(1).extend({numeric: 0, limit: {upper:25, lower:1}});
 	self.cost = ko.computed(function() {
 		if (self.currentLevel() < 1 || self.goalLevel() < 1 || self.currentLevel() == self.goalLevel()) {
 			return 0;
